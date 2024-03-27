@@ -1,0 +1,15 @@
+./primeirosProgramas/target
+./primeirosProgramas/Cargo.toml
+./primeirosProgramas/Cargo.lock
+./target
+./Cargo.toml
+./Cargo.lock
+./ProjetoRustComCargo/target
+./ProjetoRustComCargo/Cargo.toml
+./ProjetoRustComCargo/Cargo.lock
+./ProjetoRustComCargo2/target
+./ProjetoRustComCargo2/Cargo.toml
+./ProjetoRustComCargo2/Cargo.lock
+./ProjRustComCargo3/target
+./ProjRustComCargo3/Cargo.toml
+./ProjRustComCargo3/Cargo.lock
