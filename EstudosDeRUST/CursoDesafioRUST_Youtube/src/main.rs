@@ -16,6 +16,14 @@ Variáveis e Tipos de Dados em Rust
                  isize = depende do sistema operacional (32 ou 64 bits)
                  usize = depende do sistema operacional (32 ou 64 bits)
 
+        Exemplo de código com variáveis inteiras de i8:
+        let x: i8 = 10;
+        let y: i8 = -10;
+        let soma: i8 = x + y;
+        Resultado: 0
+        println!("Soma: {}", soma);
+
+
 2) - Ponto Flutuante: f32, f64
         Quantidade de caracteres que cabem em um byte: 8 bits = 1 byte
         exemplo: f32 = 32 bits
