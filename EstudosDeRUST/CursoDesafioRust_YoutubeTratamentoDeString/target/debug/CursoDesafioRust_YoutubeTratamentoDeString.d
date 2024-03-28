@@ -1,0 +1,1 @@
+E:\ProjetosProgramacao_2024\ProjetoProg_RUST\ProjetoProg_RUST_1.77.0\EstudosDeRUST\CursoDesafioRust_YoutubeTratamentoDeString\target\debug\CursoDesafioRust_YoutubeTratamentoDeString.exe: E:\ProjetosProgramacao_2024\ProjetoProg_RUST\ProjetoProg_RUST_1.77.0\EstudosDeRUST\CursoDesafioRust_YoutubeTratamentoDeString\src\main.rs

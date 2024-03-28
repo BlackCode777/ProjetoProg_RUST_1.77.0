@@ -23,27 +23,213 @@ Variáveis e Tipos de Dados em Rust
         Resultado: 0
         println!("Soma: {}", soma);
 
+        Exemplo de código com variáveis inteiras de i16:
+        let x: i16 = 10;
+        let y: i16 = -10;
+        let soma: i16 = x + y;
+        Resultado: 0
+        println!("Soma: {}", soma);
+
+        Exemplo de código com variáveis inteiras de i32:
+        let x: i32 = 10;
+        let y: i32 = -10;
+        let soma: i32 = x + y;
+        Resultado: 0
+        println!("Soma: {}", soma);
+
+        Exemplo de código com variáveis inteiras de i64:
+        let x: i64 = 10;
+        let y: i64 = -10;
+        let soma: i64 = x + y;
+        Resultado: 0
+        println!("Soma: {}", soma);
+
+        Exemplo de código com variáveis inteiras de i128:
+        let x: i128 = 1005981760517468179772955289344;
+        let y: i128 = 1232681260876;
+        let soma: i128 = x - y;
+        Resultado: 0
+        println!("Soma: {}", soma);
+
+        Exemplo de código com variáveis inteiras de isize:
+        let x: isize = 10;
+        let y: isize = -10;
+        let divisao: isize = x / y;
+        Resultado: 0
+        println!("Soma: {}", divisao);
+
+        Exemplo de código com variáveis inteiras de usize:
+        let x: usize = 10;
+        let y: usize = 10;
+        let multiplicacao: usize = x * y;
+        Resultado: 100
+        println!("Soma: {}", multiplicacao);
 
 2) - Ponto Flutuante: f32, f64
         Quantidade de caracteres que cabem em um byte: 8 bits = 1 byte
         exemplo: f32 = 32 bits
                  f64 = 64 bits
 
+        Exemplo de código com variáveis de ponto flutuante de f32:
+        let x: f32 = 10.5;
+        let y: f32 = -10.5;
+        let soma: f32 = x + y;
+        Resultado: 0
+        println!("Soma: {}", soma);
+
+        Exemplo de código com variáveis de ponto flutuante de f64:
+        let x: f64 = 10.5;
+        let y: f64 = -10.5;
+        let soma: f64 = x * y;
+        Resultado: -110.25
+        println!("Soma: {}", soma);
+
+        Exemplo de código com variáveis de ponto flutuante de f64:
+        let x: f64 = 10.5;
+        let y: f64 = -10.5;
+        let soma: f64 = x / y;
+        Resultado: -1
+        println!("Soma: {}", soma);
+
+        Exemplo de código com variáveis de ponto flutuante de f64:
+        let x: f64 = 10.5;
+        let y: f64 = -10.5;
+        let soma: f64 = x - y;
+        Resultado: 21
+        println!("Soma: {}", soma);
+
 3) - Booleano: bool
         Valores: true ou false
+
+        Exemplo de código com variáveis booleanas:
+        let x: bool = true;
+        let y: bool = false;
+        let z: bool = x && y;
+        Resultado: false
+        println!("Soma: {}", z);
+
+        Exemplo de código com variáveis booleanas:
+        let x: bool = true;
+        let y: bool = false;
+        let z: bool = x || y;
+        Resultado: true
+        println!("Soma: {}", z);
+
+        Exemplo de código com variáveis booleanas:
+        let x: bool = true;
+        let y: bool = false;
+        let z: bool = !x;
+        Resultado: false
+        println!("Soma: {}", z);
+
+        // Estudo de caso da tabela verdade
+        let x: bool = true;
+        let y: bool = false;
+        let z: bool = x && y;
+        println!("{} AND {} = {}", x, y, z);
+
+        let x: bool = true;
+        let y: bool = false;
+        let z: bool = x || y;
+        println!("{} OR {} = {}", x, y, z);
+
+        let x: bool = true;
+        let z: bool = !x;
+        println!("NOT {} = {}", x, z);
 
 4) - Caractere: char
         Tamanho: 4 bytes
         Exemplo: 'a', '1', '😀'
 
+        Exemplo de código com variáveis de caractere:
+        let x: char = 'a';
+        let y: char = '1';
+        let z: char = '😀'
+        let w: char = x + y + z;
+        println!("Soma: {}", x);
+        println!("Soma: {}", y);
+        println!("Soma: {}", z);
+
 5) - Tupla: (T1, T2, T3, ..., Tn)
         Exemplo: (1, 2, 3, 4, 5)
                  (1, "Olá", 'a', true)
+
+                 Exemplo de código com variáveis de tupla:
+                        let x: (i32, i32, i32) = (1, 2, 3);
+                        let y: (i32, i32, i32) = (4, 5, 6);
+                        let z: (i32, i32, i32) = x + y;
+                        println!("Soma: {:?}", z);
 
 6) - Array: [T; N]
         Exemplo: [1, 2, 3, 4, 5]
                  ["Olá", "Mundo"]
                  ['a', 'b', 'c']
+
+        Exemplo de código com variáveis de array:
+        let x: [i32; 5] = [1, 2, 3, 4, 5];
+        let y: [i32; 5] = [6, 7, 8, 9, 10];
+        let z: [i32; 5] = x + y;
+        println!("Soma: {:?}", z);
+
+        Exemplo de código com variáveis de array:
+        let x: [i32; 5] = [1, 2, 3, 4, 5];
+        let y: [i32; 5] = [6, 7, 8, 9, 10];
+        let z: [i32; 5] = x - y;
+        println!("Soma: {:?}", z);
+
+        Exemplo de código com variáveis de array:
+        let x: [i32; 5] = [1, 2, 3, 4, 5];
+        let y: [i32; 5] = [6, 7, 8, 9, 10];
+        let z: [i32; 5] = x * y;
+        println!("Soma: {:?}", z);
+
+        Exemplo de código com variáveis de array:
+        let x: [i32; 5] = [1, 2, 3, 4, 5];
+        let y: [i32; 5] = [6, 7, 8, 9, 10];
+        let z: [i32; 5] = x / y;
+        println!("Soma: {:?}", z);
+
+        // Adicionando um elemento no fim do array
+        let mut x: [i32; 5] = [1, 2, 3, 4, 5];
+        x.push(6);
+        println!("Array: {:?}", x);
+
+        // Removendo um elemento no fim do array
+        let mut x: [i32; 5] = [1, 2, 3, 4, 5];
+        x.pop();
+        println!("Array: {:?}", x);
+
+        // Acessando um elemento do array
+        let x: [i32; 5] = [1, 2, 3, 4, 5];
+        let y: i32 = x[0];
+        println!("Elemento: {}", y);
+
+        // Adicionando um elemento no início do array
+        let mut x: [i32; 5] = [1, 2, 3, 4, 5];
+        x.insert(0, 0);
+        println!("Array: {:?}", x);
+
+        // Removendo um elemento no início do array
+        let mut x: [i32; 5] = [1, 2, 3, 4, 5];
+        x.remove(0);
+        println!("Array: {:?}", x);
+
+        // Acessando um elemento na metade do array
+        let x: [i32; 5] = [1, 2, 3, 4, 5];
+        let y: i32 = x[2];
+        println!("Elemento: {}", y);
+
+        // Algoritmo para busca mai simples
+        let x: [i32; 5] = [1, 2, 3, 4, 5];
+        let y: i32 = 3;
+        let mut pos: i32 = -1;
+        for i in 0..x.len() {
+            if x[i] == y {
+                pos = i as i32;
+                break;
+            }
+        }
+        println!("Posição: {}", pos);
 
 7) - String: String
         Exemplo: "Olá, Mundo!"
@@ -225,4 +411,86 @@ ENTENDENDO O CÓDIGO:
 
 */
 
-fn main() {}
+// Imports
+use inflector::Inflector;
+
+fn main(){
+
+
+
+}
+
+/**
+ 
+ 
+fn main() {
+    // Tratamento de strings em Rust
+
+    // Declaração de uma variável mutável chamada palpite do tipo String
+
+    // Usando métodos da String em Rust
+
+
+
+        let mut palpite: "string rust".to_string();
+        println!("String: {}", palpite);
+
+        // to_uppercase - Converte a string para maiúscula
+        let s1: String = "Olá, Mundo!".to_uppercase();
+        println!("String: {}", s1);
+
+        // to_lowercase - Converte a string para minúscula
+        let s2: String = "Olá, Mundo!".to_lowercase();
+        println!("String: {}", s2);
+
+        // capitalize - Converte a primeira letra da string para maiúscula
+        let s3: String = "olá, mundo!".to_title_case();
+        println!("String: {}", s3);
+
+        // to_snake_case - Converte a string para snake_case
+        let s4: String = "Olá, Mundo!".to_snake_case();
+        println!("String: {}", s4);
+
+        // to_kebab_case - Converte a string para kebab-case
+        let s5: String = "Olá, Mundo!".to_kebab_case();
+        println!("String: {}", s5);
+
+        // to_camel_case - Converte a string para camelCase
+        let s6: String = "Olá, Mundo!".to_camel_case();
+        println!("String: {}", s6);
+
+        // to_pascal_case - Converte a string para PascalCase
+        let s7: String = "Olá, Mundo!".to_pascal_case();
+        println!("String: {}", s7);
+
+        // to_sentence_case - Converte a string para Sentence case
+        let s8: String = "Olá, Mundo!".to_sentence_case();
+        println!("String: {}", s8);
+
+        // to_title_case - Converte a string para Title Case
+        let s9: String = "Olá, Mundo!".to_title_case();
+        println!("String: {}", s9);
+
+        // contando o número de caracteres da string
+        let contaChar: usize = "Olá, Mundo!".chars().count();
+        println!("String: {}", contaChar);    
+}
+
+ * 
+ * 
+ * // Usado o trim para remover os espaços em branco
+    let s: String = " Olá, Mundo! ".trim();
+    println!("String: {_  _}", s);
+
+    // retirando os espaços em branco da direita
+    let s1: String = " Olá, Mundo! ".trim_end();
+    println!("String: {_  _}", s1);
+
+    // retirando os espaços em branco da esquerda
+    let s2: String = " Olá, Mundo! ".trim_start();
+    println!("String: {_  _}", s2);
+
+    // replace - substitui uma string por outra
+    let s3: String = "Olá, Mundo!".replace("Olá", "Rust");
+    println!("String: {}", s3);
+ */
