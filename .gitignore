@@ -1,3 +1,9 @@
-./primeirosProgramas/target
-./CursoDesafioRust_YoutubeTratamentoDeString/target
-./CursoDesafioRUST_Youtube/target
+
+# ignorar todos as pastas target
+**/target
+
+# ignorar todos os arquivos .class
+**/*.class
+
+
+

@@ -18,5 +18,24 @@
         "titleBar.inactiveBackground": "#8b380199",
         "titleBar.inactiveForeground": "#e7e7e799"
     },
-    "peacock.color": "#8b3801"
+    "peacock.color": "#8b3801",
+    "rust-analyzer.checkOnSave": false,
+    "cSpell.enableFiletypes": [
+        "!c",
+        "!erlang",
+        "!graphql",
+        "!latex",
+        "!less",
+        "!php",
+        "!pug",
+        "!rust",
+        "!scala",
+        "!swift",
+        "!vue",
+        "gitignore",
+        "java-properties",
+        "spring-boot-properties",
+        "spring-boot-properties-yaml",
+        "sql"
+    ]
 }
