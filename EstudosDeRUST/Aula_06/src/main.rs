@@ -9,6 +9,24 @@
 // Rust (rls) e CodeLLDB
 // gdb
 
+/*
+Claro! Aqui vai um exercício interessante que você pode tentar em Rust:
+Exercício: Calculadora de Média Ponderada
+Escreva um programa em Rust que calcule a média ponderada de uma série de notas de alunos.
+O programa deve primeiro perguntar quantas notas serão fornecidas. Em seguida, para cada nota,
+o programa deve solicitar a nota do aluno e o peso dessa nota. Ao final, o programa deve exibir
+a média ponderada das notas. A média ponderada é calculada somando-se todas as notas multiplicadas
+por seus respectivos pesos, dividido pela soma dos pesos.
+
+Critérios:
+1 - Use um loop para solicitar as notas e os pesos.
+2 - Valide as entradas para garantir que notas e pesos sejam números positivos.
+3 - Use um tipo de dado adequado para armazenar as notas e os pesos.
+4 - O programa deve funcionar para qualquer quantidade de notas.
+5 - Exiba a média ponderada com duas casas decimais.
+Boa sorte! Se precisar de ajuda com a implementação, estou aqui.
+*/
+
 fn main() {
     println!("Rust - Estruturas de Controle");
 
