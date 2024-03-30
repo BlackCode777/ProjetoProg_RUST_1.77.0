@@ -44,8 +44,8 @@ fn main() {
     // 2 x 2 = 4
     // 2 x 3 = 6
 
-    let mut multiplicador: i32 = 0;
-    let mut resultado: i32 = 0;
+    // let mut multiplicador: i32 = 0;
+    // let mut resultado: i32 = 0;
 
     println!("Digite o multiplicador: ");
     let mut input = String::new();
