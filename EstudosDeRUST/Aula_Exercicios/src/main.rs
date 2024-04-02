@@ -1,97 +1,25 @@
 // Verificador de numeros primos
 
 fn main() {
-    
     // Estudo e entendimento de referência de memória
-    let 
-
-    // Memória static
-    // É criada fora na função main()
-    // Ela é alocada na memória durante a compilação
-    // Ela é alocada na memória durante a execução
-    // Ela é uma variavel unsafe
-    // Ela é uma variavel global
-    // Ela é uma variavel constante
-    // Ela é uma variavel imutável
-    // Ela é uma variavel que não pode ser alterada
-    // Se for alterada, o compilador irá gerar um erro
-    // Mas pode ser mutavel de usar unsafe
-    // Exemplo
-    // static mut NUMBER: i32 = 10;
-    // const NUMBER: i32 = 10;
-    // Quando devo trabalhar com static?
-    // Quando eu preciso de uma variavel global
-    // Quando eu preciso de uma variavel constante
-    // Quando eu preciso de uma variavel imutável
-
-    // Memória Stack
-    // O que são variáveis stack
-    // São variáveis que são alocadas na pilha
-    // São variáveis que são alocadas na memória durante a execução
-    // Quais são os tipo de variáveis stack
-    // Exemplos de variáveis stack
-    // let number: i32 = 10;
-    // let number: f32 = 10.0;
-    // let number: char = 'a';
-    // let number: bool = true;
-    // let number: String = String::from("Rust");
-    // let number: Vec<i32> = Vec::new();
-    // let number: [i32; 5] = [1, 2, 3, 4, 5];
-    // let number: (i32, f32, char) = (10, 10.0, 'a');
-    // let number: Option<i32> = Some(10);
-    // let number: Result<i32, String> = Ok(10);
-    // let number: Box<i32> = Box::new(10);
-    // let number: Rc<i32> = Rc::new(10);
-    // let number: Arc<i32> = Arc::new(10);
-    // let number: Mutex<i32> = Mutex::new(10);
-    // let number: Cell<i32> = Cell::new(10);
-    // let number: RefCell<i32> = RefCell::new(10);
-    // let number: Ref<i32> = Ref::new(10);
-    // let number: RefMut<i32> = RefMut::new(10);
-    // let number: RwLock<i32> = RwLock::new(10);
-    // let number: RwLockReadGuard<i32> = RwLockReadGuard::new(10);
-    // let number: RwLockWriteGuard<i32> = RwLockWriteGuard::new(10);
-    // let number: Cow<i32> = Cow::new(10);
-    // let number: BTreeMap<i32> = BTreeMap::new();
-    // let number: HashMap<i32> = HashMap::new();
-    // let number: BTreeSet<i32> = BTreeSet::new();
-    // let number: HashSet<i32> = HashSet::new();
-    // let number: LinkedList<i32> = LinkedList::new();
-    // let number: VecDeque<i32> = VecDeque::new();
-    // let number: BinaryHeap<i32> = BinaryHeap::new();
-    // let number: Rc<i32> = Rc::new(10);
-
-    // Memória Heap
-    // O que são variáveis heap
-    // São variáveis que são alocadas no heap
-    // São variáveis que são alocadas na memória durante a execução
-    // Quais são os tipo de variáveis heap
-    // Exemplos de variáveis heap
-    // let number: String = String::from("Rust");
-    // let number: Vec<i32> = Vec::new();
-    // let number: Box<i32> = Box::new(10);
-    // let number: Rc<i32> = Rc::new(10);
-    // let number: Arc<i32> = Arc::new(10);
-    // let number: Mutex<i32> = Mutex::new(10);
-    // let number: Cell<i32> = Cell::new(10);
-    // let number: RefCell<i32> = RefCell::new(10);
-    // let number: Ref<i32> = Ref::new(10);
-    // let number: RefMut<i32> = RefMut::new(10);
-    // let number: RwLock<i32> = RwLock::new(10);
-    // let number: RwLockReadGuard<i32> = RwLockReadGuard::new(10);
-    // let number: RwLockWriteGuard<i32> = RwLockWriteGuard::new(10);
-    // let number: Cow<i32> = Cow::new(10);
-    // let number: BTreeMap<i32> = BTreeMap::new();
-    // let number: HashMap<i32> = HashMap::new();
-    // let number: BTreeSet<i32> = BTreeSet::new();
-    // let number: HashSet<i32> = HashSet::new();
-    // let number: LinkedList<i32> = LinkedList::new();
-    // let number: VecDeque<i32> = VecDeque::new();
-    // let number: BinaryHeap<i32> = BinaryHeap::new();
-    // let number: Rc<i32> = Rc::new(10);
 }
 
 /*
+
+fn main() {
+    // Estudo e entendimento de referência de memória
+    // https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html?highlight=ownershp%20borrowing#references-and-borrowing
+
+    // & - representa a referencia do endereço de memória
+    let s1 = String::from("Anderson estuda RUST");
+    let len = calcula_tamanho(&s1);
+
+    println!("the length of '{}' is {}.", s1, len);
+}
+
+fn calcula_tamanho(s: &String) -> usize {
+    s.len()
+}
 
 &s1 - com isso se pega a referência da memória onde o dados está guardado
 conceito de onwership / reborrowing
