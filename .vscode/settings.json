@@ -19,7 +19,7 @@
         "titleBar.inactiveForeground": "#e7e7e799"
     },
     "peacock.color": "#8b3801",
-    "rust-analyzer.checkOnSave": false,
+    "rust-analyzer.checkOnSave": true,
     "cSpell.enableFiletypes": [
         "!c",
         "!erlang",
