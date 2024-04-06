@@ -1,1 +1,0 @@
-E:\ProjetosProgramacao_2024\ProjetoProg_RUST\ProjetoProg_RUST_1.77.0\EstudosDeRUST\primeirosProgramas\target\debug\primeirosProgramas.exe: E:\ProjetosProgramacao_2024\ProjetoProg_RUST\ProjetoProg_RUST_1.77.0\EstudosDeRUST\primeirosProgramas\src\main.rs

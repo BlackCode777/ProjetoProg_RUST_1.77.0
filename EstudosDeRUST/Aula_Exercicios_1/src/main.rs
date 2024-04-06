@@ -165,7 +165,26 @@ fn excluir_aluno(alunos: &mut Vec<Aluno>) {
     }
 }
 
+// Criando um enumerable
+enum VersaoIp {
+    V4,
+    V6
+}
+
+struct Servidores{
+    nome: String,
+    tipo_ip: VersaoIp
+}
+
+// fn mostrar_servidores(servidor: Servidores){
+//     println!("Nome: {}", servidor.nome);
+//     println!("Tipo IP: {:?}", servidor.tipo_ip);
+// }
+
 fn main() {
+
+
+
     /*
     === Passo 1: ===
     Sua misão é contruir um menu de sistema console

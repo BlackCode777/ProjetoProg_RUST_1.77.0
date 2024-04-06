@@ -1,1 +1,0 @@
-E:\ProjetosProgramacao_2024\ProjetoProg_RUST\ProjetoProg_RUST_1.77.0\EstudosDeRUST\CursoDesafioRUST_Youtube\target\debug\CursoDesafioRUST_Youtube.exe: E:\ProjetosProgramacao_2024\ProjetoProg_RUST\ProjetoProg_RUST_1.77.0\EstudosDeRUST\CursoDesafioRUST_Youtube\src\main.rs
