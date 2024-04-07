@@ -1,27 +1,27 @@
 
-enum EnderecoIp {
-    V4(String),
-    V6(String),
-}
+use std::collections::HashMap;
 
-fn mostrar_ip(ip: EnderecoIp){
-    match ip {
-        EnderecoIp::V4(valor) => {
-            println!("Tenho um IPV4 com o IP {}", valor);
-        },
-        EnderecoIp::V6(valor) => {
-            println!("Tenho um IPV6 com o IP {}", valor);
-        }
-    }
+struct Conection {
+    driver: String,
+    str_conection: String
 }
 
 fn main(){
 
-    let ip_com_ipv6 = EnderecoIp::V6("::1".to_string());
-    let ip_com_ipv4 = EnderecoIp::V4("192.168.0.1".to_string());
+    let mut config_db: HashMap<&str, Conection> = HashMap::new();
 
-    mostrar_ip(ip_com_ipv4);
-    mostrar_ip(ip_com_ipv6);
+    config_db.insert("string_postgres", Conection{
+        driver: String::from("Postgres"),
+        str_conection: "Server=IP address;Port=5432;Database=database_name;User Id=user_name;Password=password;".to_string()
+    });
+
+    config_db.insert("string_sqlserver", Conection{
+        driver: String::from("SQL Server"),
+        str_conection: "Server=IP address;Port=1433;Database=database_name;User Id=user_name;Password=password;".to_string()
+    });
+
+    for (key, value) in &config_db {
+        println!("{}: Driver: {}, Str: {}", key, value.driver, value.str_conection);
+    }
 
 }
-
