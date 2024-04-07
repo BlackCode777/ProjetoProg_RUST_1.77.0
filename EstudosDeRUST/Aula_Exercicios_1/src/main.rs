@@ -176,11 +176,6 @@ struct Servidores{
     tipo_ip: VersaoIp
 }
 
-// fn mostrar_servidores(servidor: Servidores){
-//     println!("Nome: {}", servidor.nome);
-//     println!("Tipo IP: {:?}", servidor.tipo_ip);
-// }
-
 fn main() {
 
 
