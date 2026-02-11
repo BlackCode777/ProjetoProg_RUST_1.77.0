@@ -28,4 +28,3 @@ pub struct UpdateBook {
     pub published_year: Option<i32>,
 }
 
-pub mod book_model;

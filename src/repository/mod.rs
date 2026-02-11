@@ -3,7 +3,8 @@
 use sqlx::PgPool;
 use uuid::Uuid;
 
-use crate::{errors::ApiError, model::book_model::Book};
+use crate::errors::ApiError;
+use crate::model::Book;
 
 pub async fn insert(pool: &PgPool, id: Uuid, title: String, author: String, year: Option<i32>)
                     -> Result<Book, ApiError>
@@ -75,7 +76,3 @@ pub async fn delete(pool: &PgPool, id: Uuid) -> Result<(), ApiError>
 
     Ok(())
 }
-
-// repository/mod.rs
-
-pub mod book_repo;

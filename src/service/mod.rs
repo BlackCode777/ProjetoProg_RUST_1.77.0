@@ -5,11 +5,12 @@ use uuid::Uuid;
 
 use crate::{
     errors::ApiError,
-    model::book_model::{Book, NewBook, UpdateBook},
-    repository::book_repo,
+    model::{Book, NewBook, UpdateBook},
+    repository,
 };
 
 pub mod book_service {
+    use crate::model::{Book, NewBook};
     use super::*;
 
     #[derive(Clone)]
@@ -30,23 +31,23 @@ pub mod book_service {
                 if y < 0 { return Err(ApiError::bad_request("published_year inválido")); }
             }
 
-            book_repo::insert(&self.pool, Uuid::new_v4(), title, author, dto.published_year).await
+            repository::insert(&self.pool, Uuid::new_v4(), title, author, dto.published_year).await
         }
 
         pub async fn list(&self) -> Result<Vec<Book>, ApiError> {
-            book_repo::list(&self.pool).await
+            repository::list(&self.pool).await
         }
 
         pub async fn get(&self, id: Uuid) -> Result<Book, ApiError> {
-            book_repo::find_by_id(&self.pool, id).await
+            repository::find_by_id(&self.pool, id).await
         }
 
         pub async fn update(&self, id: Uuid, dto: UpdateBook) -> Result<Book, ApiError> {
-            book_repo::update(&self.pool, id, dto.title, dto.author, dto.published_year).await
+            repository::update(&self.pool, id, dto.title, dto.author, dto.published_year).await
         }
 
         pub async fn delete(&self, id: Uuid) -> Result<(), ApiError> {
-            book_repo::delete(&self.pool, id).await
+            repository::delete(&self.pool, id).await
         }
     }
 }
