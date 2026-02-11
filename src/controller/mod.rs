@@ -1,50 +1,45 @@
-// src/controller/mod.rs
-use axum::{
-    extract::{Path, State},
-    http::StatusCode,
-    routing::{get, post},
-    Json, Router,
-};
-use uuid::Uuid;
+use axum::Router;
+use crate::AppState;
 
-use crate::{
-    errors::ApiError,
-    model::{Book, NewBook, UpdateBook},
-    AppState,
-};
+pub mod books;
+pub mod health;
 
-pub fn routes() -> Router<crate::AppState> {
+/* =============================================================================================
+   MÓDULO: controller/mod.rs  (AGREGADOR DE ROTAS)
+
+   Papel deste módulo:
+   - Este arquivo funciona como um “hub” de controllers.
+   - Ele não implementa endpoints diretamente (isso fica em books.rs e health.rs).
+   - Ele só:
+     1) declara os submódulos (`pub mod books; pub mod health;`)
+     2) cria um Router central
+     3) junta (merge) as rotas de cada controller em um único Router<AppState>
+
+   Por que isso é útil:
+   - Você mantém a API organizada por recursos:
+     * controller/books.rs  -> rotas de livros
+     * controller/health.rs -> rotas de saúde
+   - No main.rs você faz apenas:
+     `.merge(controller::routes())`
+   - Se amanhã existir `users`, você só adiciona:
+     `pub mod users;` e `.merge(users::routes())`
+
+   Observação sobre visibilidade:
+   - `pub mod books;` torna o módulo `books` acessível fora deste arquivo.
+   - Sem `pub`, o módulo ficaria privado (só este módulo conseguiria acessar).
+============================================================================================= */
+
+pub fn routes() -> Router<AppState> 
+{
     Router::new()
-        .route("/health", get(|| async { "ok" }))
-        .route("/books", post(create_book).get(list_books))
-        .route("/books/{id}", get(get_book).put(update_book).delete(delete_book))
-}
+        /* `.merge(health::routes())`:
+           - Pega o Router retornado pelo controller `health`
+           - “cola” as rotas dele dentro deste Router principal.
+           - Ex.: /health e /health/db passam a existir aqui. */
+        .merge(health::routes())
 
-async fn create_book(
-    State(state): State<crate::AppState>,
-    Json(payload): Json<NewBook>,
-) -> Result<(StatusCode, Json<Book>), ApiError> {
-    let book = state.book_service.create(payload).await?;
-    Ok((StatusCode::CREATED, Json(book)))
-}
-
-async fn list_books(State(state): State<crate::AppState>) -> Result<Json<Vec<Book>>, ApiError> {
-    Ok(Json(state.book_service.list().await?))
-}
-
-async fn get_book(State(state): State<crate::AppState>, Path(id): Path<Uuid>) -> Result<Json<Book>, ApiError> {
-    Ok(Json(state.book_service.get(id).await?))
-}
-
-async fn update_book(
-    State(state): State<crate::AppState>,
-    Path(id): Path<Uuid>,
-    Json(payload): Json<UpdateBook>,
-) -> Result<Json<Book>, ApiError> {
-    Ok(Json(state.book_service.update(id, payload).await?))
-}
-
-async fn delete_book(State(state): State<crate::AppState>, Path(id): Path<Uuid>) -> Result<StatusCode, ApiError> {
-    state.book_service.delete(id).await?;
-    Ok(StatusCode::NO_CONTENT)
+        /* `.merge(books::routes())`:
+           - Faz o mesmo para o controller de livros.
+           - Ex.: /books e /books/{id} passam a existir aqui. */
+        .merge(books::routes())
 }

@@ -1,137 +1,138 @@
+// ==============================
+// src/main.rs (versão didática)
+// ==============================
+
+// Importa a função `dotenv()` (crate dotenvy) para carregar variáveis do arquivo `.env`
 use dotenvy::dotenv;
+
+// Importa o "builder" de pool de conexões para Postgres (SQLx)
 use sqlx::postgres::PgPoolOptions;
-use std::{env, net::SocketAddr};
+
+// Importa `SocketAddr` (endereço IP + porta) do std, usado para bind do servidor
+use std::net::SocketAddr;
+
+// Importa `TcpListener` do Tokio (listener TCP assíncrono)
 use tokio::net::TcpListener;
 
+// Middleware do Tower para logar requisições/respostas HTTP automaticamente
+use tower_http::trace::TraceLayer;
+
+// Declara os módulos do projeto (cada `mod xyz;` corresponde a `src/xyz.rs` ou `src/xyz/mod.rs`)
 mod controller;
-mod enums;
 mod errors;
 mod model;
 mod repository;
 mod service;
+mod settings;
 
+// Importa o BookService de dentro do módulo service
 use service::book_service::BookService;
 
+// Importa Settings, que lê configurações do ambiente (.env / variáveis do sistema)
+use settings::Settings;
+
+// `AppState` é o "estado global" que o Axum injeta nos handlers via `State(...)`.
+// Aqui você guarda suas dependências (BookService, e no futuro cache, config, etc.)
 #[derive(Clone)]
 pub struct AppState {
     pub book_service: BookService,
 }
 
-/* O que ele faz na prática?
-1) - Cria um runtime Tokio (um “motor” de execução assíncrona com event loop + thread pool).
-2) - Permite que seu main seja async fn main().
-3) - Executa o corpo do main dentro desse runtime. */
+/*
+    O que `#[tokio::main(flavor = "multi_thread")]` faz na prática?
+
+    1) Cria e inicializa um runtime Tokio (motor async).
+    2) Permite que `main` seja `async fn main()`.
+    3) Executa o corpo do `main` dentro desse runtime usando múltiplas threads.
+
+    Por que "multi_thread"?
+    - Uma API atende várias conexões ao mesmo tempo.
+    - O runtime multi-thread distribui tasks em um pool de workers.
+*/
 #[tokio::main(flavor = "multi_thread")]
 async fn main() {
 
-    /*BlackCode77, esse trecho faz duas inicializações bem comuns em backend Rust: carregar variáveis do `.env` e ligar o sistema de logs.
+    /*
+        1) dotenv().ok();
 
-        ## 1) `dotenv().ok();`
-        * `dotenv()` tenta ler um arquivo **`.env`** na raiz do projeto (ou no diretório atual onde o binário está sendo executado).
-        * Ele pega linhas como:
-
-          ```env
-          DATABASE_URL=postgres://postgres:admin@localhost:5432/booksdb
-          ```
-
-          e coloca isso como **variáveis de ambiente** do processo.
-        * O `.ok()` é só pra **ignorar erro** caso não exista `.env`.
-          * Sem `.ok()`, você teria que tratar o erro (por exemplo, em produção pode não ter `.env`, e sim variáveis do sistema).
-
-        Resultado prático: depois disso, `env::var("DATABASE_URL")` passa a funcionar lendo do `.env`.
-
-        ## 2) `tracing_subscriber::fmt::init();`
-        * `tracing` é a biblioteca de logs moderna do Rust.
-        * `tracing_subscriber::fmt::init()` liga um “subscriber” que imprime logs no console (stdout) em formato legível.
-        * Isso permite que logs de bibliotecas (ex.: Axum/Hyper/SQLx) apareçam no terminal.
-
-        Exemplo do que começa a aparecer depois disso:
-        * logs de requisições (se você usar middleware de trace)
-        * logs do SQLx (ex.: “slow acquire threshold”)
-        * seus logs se você usar `tracing::info!`, `tracing::warn!`, etc.
-
-        Resumo: a primeira linha carrega config do `.env`; a segunda liga o motor de logs do backend. */
+        - Procura um arquivo `.env` e carrega as variáveis para o ambiente do processo.
+        - Ex: DATABASE_URL=postgres://...
+        - `.ok()` ignora erro se o arquivo não existir (útil em produção, onde vem do ambiente).
+    */
     dotenv().ok();
+
+    /*
+        2) tracing_subscriber::fmt::init();
+
+        - Inicializa o sistema de logs (`tracing`).
+        - Faz logs de libs como axum/sqlx aparecerem no terminal.
+        - Em conjunto com TraceLayer, você vê logs de requisição HTTP.
+    */
     tracing_subscriber::fmt::init();
 
-    /* BlackCode77, esse trecho faz a **leitura da string de conexão** e cria um **pool de conexões** com o Postgres.
+    /*
+        3) Settings::from_env()
 
-        1. `let db_url = env::var("DATABASE_URL").expect("DATABASE_URL não definido no .env");`
-           * `env::var("DATABASE_URL")` tenta ler a variável de ambiente `DATABASE_URL`.
-           * Como você chama `dotenv().ok()` antes, ele carrega o `.env` e coloca essas variáveis no ambiente do processo.
-           * `expect(...)` significa: se não existir `DATABASE_URL`, o programa **para** e mostra essa mensagem.
+        - Lê configurações (HOST, PORT, DATABASE_URL, DB_MAX_CONNS etc.)
+        - Centraliza config em um lugar só (melhor que hardcode).
+        - Evita espalhar env::var() por todo projeto.
+    */
+    let cfg = Settings::from_env();
 
-        Exemplo de `.env`:
-        ```env   DATABASE_URL=postgres://postgres:admin@localhost:5432/booksdb ```
+    /*
+        4) Criar Pool de conexões do Postgres (SQLx)
 
-        2. `let pool = PgPoolOptions::new()`
-           * Começa a configurar opções do pool de conexões do SQLx.
-
-        3. `.max_connections(10)`
-           * Define o máximo de conexões simultâneas que esse pool pode manter abertas com o banco.
-           * Isso é importante porque abrir conexão é “caro”; pool reaproveita conexões.
-
-        4. `.connect(&db_url).await`
-           * Conecta no Postgres usando a URL e cria o pool pronto.
-           * É `await` porque envolve I/O (rede).
-
-        5. `.expect("Falha ao conectar no Postgres");`
-           * Se não conseguir conectar (Postgres fora do ar, porta errada, senha errada, DB não existe), ele **panic** com essa mensagem.
-
-        Resumo: você carrega a URL do banco e cria um `PgPool` com até 10 conexões reutilizáveis, que será usado por
-        repositórios/serviços pra executar queries sem ficar abrindo conexão toda hora. */
-    let db_url = env::var("DATABASE_URL").expect("DATABASE_URL não definido no .env");
+        - PgPoolOptions::new() cria o builder do pool.
+        - max_connections(cfg.db_max_conns) define quantas conexões simultâneas manter abertas.
+        - connect(&cfg.db_url).await efetivamente conecta (I/O assíncrono).
+        - expect(...) derruba a aplicação com mensagem clara se falhar (DB off/credenciais etc).
+    */
     let pool = PgPoolOptions::new()
-        .max_connections(10)
-        .connect(&db_url)
+        .max_connections(cfg.db_max_conns)
+        .connect(&cfg.db_url)
         .await
         .expect("Falha ao conectar no Postgres");
 
-    /*BlackCode77, esse trecho faz duas coisas: cria o “estado compartilhado” da aplicação e registra
-        esse estado no Router do Axum para que os handlers consigam acessar o serviço.
+    /*
+        5) Montar o AppState
 
-        1. `let state = AppState { book_service: BookService::new(pool) };`
-           * `AppState` é um struct que você definiu para carregar dependências da API (tipo um “container” simples).
-           * Aqui você está criando um `BookService` com o `pool` do Postgres (`PgPool`).
-           * Resultado: `state` passa a ter o serviço pronto para ser usado em qualquer endpoint.
+        - BookService recebe o pool.
+        - AppState guarda o BookService.
+        - Esse state será injetado automaticamente em cada handler via `State(AppState)`.
+    */
+    let state = AppState {
+        book_service: BookService::new(pool),
+    };
 
-        2. `let app = axum::Router::new()`
-           * Cria um router vazio (sem rotas ainda).
+    /*
+        6) Montar o Router (Axum)
 
-        3. `.merge(controller::routes())`
-           * “Mescla” as rotas definidas no seu módulo `controller` (por exemplo `/health`, `/books`, `/books/{id}`)
-                dentro do router principal.
-           * Isso te permite organizar rotas em arquivos separados e depois juntar tudo no `main`.
-
-        4. `.with_state(state);`
-           * Registra esse `state` dentro do Router.
-           * A partir daí, qualquer handler que declarar `State(state): State<AppState>` consegue acessar
-           `state.book_service` sem precisar criar service toda hora.
-
-        Em resumo: você cria `BookService` **uma vez** (com o pool), guarda no `AppState`, e o Axum injeta esse
-        `AppState` nos handlers via `State(...)`.  */
-    let state = AppState { book_service: BookService::new(pool) };
+        - Router::new() cria router vazio.
+        - merge(controller::routes()) junta rotas definidas em módulos separados (health/books etc).
+        - layer(TraceLayer::new_for_http()) adiciona middleware de log HTTP.
+        - with_state(state) registra o estado global (AppState).
+    */
     let app = axum::Router::new()
         .merge(controller::routes())
+        .layer(TraceLayer::new_for_http())
         .with_state(state);
 
-    /* 1) - let addr = SocketAddr::from(([127, 0, 0, 1], 8080));
-                Monta um endereço de rede: IP 127.0.0.1 (loopback = só sua máquina) e porta 8080.
-                Resultado: o servidor vai responder em http://127.0.0.1:8080.
+    /*
+        7) Bind do servidor
 
-        2) - let listener = TcpListener::bind(addr).await.unwrap();
-                Cria um “ouvinte” TCP (socket) preso nesse endereço.
-                Ele “abre” a porta 8080 e fica aguardando conexões.
-                await porque abrir/bind pode envolver operação async.
-                unwrap() porque se falhar (porta em uso, permissão, etc.) o programa panic.
-
-        3) - axum::serve(listener, app).await.unwrap();
-                Entrega esse listener pro Axum e manda ele servir o app (seu Router com rotas/handlers).
-                A partir daí, cada request HTTP que chegar na porta 8080 é roteado pras funções (handlers) que você registrou.
-                Esse .await normalmente fica rodando indefinidamente enquanto a API estiver no ar.
-                Outro unwrap() para “morrer” se o servidor falhar por algum motivo. */
-    let addr = SocketAddr::from(([127, 0, 0, 1], 8080));
+        - Constrói o endereço com HOST:PORT.
+        - parse() converte string -> SocketAddr.
+        - TcpListener::bind(addr).await abre a porta e começa a escutar conexões.
+    */
+    let addr: SocketAddr = format!("{}:{}", cfg.host, cfg.port).parse().unwrap();
     let listener = TcpListener::bind(addr).await.unwrap();
-    axum::serve(listener, app).await.unwrap();
 
+    /*
+        8) Serve o app
+
+        - axum::serve(listener, app).await mantém o servidor rodando.
+        - Cada request entra no Router e cai nos handlers registrados.
+        - unwrap() derruba o app se o servidor falhar.
+    */
+    axum::serve(listener, app).await.unwrap();
 }
